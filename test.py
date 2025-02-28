@@ -8,7 +8,7 @@ class TestVirtualMachine(unittest.TestCase):
 
     def setUp(self):
         """Set up three VirtualMachine instances with unique ports."""
-        base_port = 6000 + (int(time.time()) % 1000)  # Generate dynamic ports to avoid conflicts
+        base_port = 6000 + (int(time.time()) % 1000)  # Generate dynamic ports 
         self.vm0 = VirtualMachine(vm_id=0, peers=[base_port+1, base_port+2], port=base_port)
         self.vm1 = VirtualMachine(vm_id=1, peers=[base_port, base_port+2], port=base_port+1)
         self.vm2 = VirtualMachine(vm_id=2, peers=[base_port, base_port+1], port=base_port+2)
@@ -25,7 +25,7 @@ class TestVirtualMachine(unittest.TestCase):
         self.listen_thread1.start()
         self.listen_thread2.start()
 
-        time.sleep(0.5)  # Allow time for all servers to bind
+        time.sleep(0.5) 
 
     def tearDown(self):
         """Stop all VMs after tests."""
@@ -56,7 +56,7 @@ class TestVirtualMachine(unittest.TestCase):
         """Test send_message sends the correct logical clock value."""
         self.vm0.logical_clock = 10
         self.vm0.send_message(self.vm1.port)
-        time.sleep(0.2)  # Allow message to be received
+        time.sleep(0.2)  
         self.assertFalse(self.vm1.message_queue.empty())
         self.assertEqual(self.vm1.message_queue.get(), 10)
 
@@ -76,7 +76,7 @@ class TestVirtualMachine(unittest.TestCase):
         """Test process_cycle when sending a message to a peer."""
         self.vm0.logical_clock = 5
         self.vm0.process_cycle()
-        time.sleep(0.2)  # Allow message to be processed
+        time.sleep(0.2) 
         self.assertGreaterEqual(self.vm0.logical_clock, 6)
 
     def test_run_stops_properly(self):
