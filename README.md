@@ -3,7 +3,7 @@
 This project simulates an asynchronous distributed system using 3 virtual machines (VMs) that communicate via sockets using Python. Each VM maintains a logical clock and can send and receive messages with peers. The system logs all activities accordingly.
 
 
-## Running the project
+## Running the Project
 
 Execute the following command to start the system:
 ```sh
@@ -13,7 +13,7 @@ python virtualmachine.py
 - This will start three virtual machines, each running in a separate thread.
 - The simulation runs for 60 seconds, during which the VMs send messages, process internal events, and update their logical clocks.
 
-## File structure
+## File Structure
 
 ```sh
 .
