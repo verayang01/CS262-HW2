@@ -16,6 +16,7 @@ python virtualmachine.py
 ## File structure
 
 ```sh
+.
 ├── virtualmachine.py  
 ├── test.py           
 ```
