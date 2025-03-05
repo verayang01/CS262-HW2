@@ -123,7 +123,12 @@ class VirtualMachine:
 
 def vm_process(vm_id, peers, port):
     """
-    Function to run the VirtualMachine in a separate process.
+    Create a virtual machine in a separate process and start to run the process. 
+
+    Parameters:
+        - vm_id (int): Unique identifier for the virtual machine.
+        - peers (list): List of peer machine ports.
+        - port (int): Port number for this VM to listen on.
     """
     vm = VirtualMachine(vm_id, peers, port)
     vm.run()
