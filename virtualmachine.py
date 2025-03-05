@@ -4,6 +4,7 @@ import time
 import random
 import queue
 from datetime import datetime
+import multiprocessing
 
 class VirtualMachine:
     """
@@ -47,7 +48,6 @@ class VirtualMachine:
                 conn.close()
             except Exception as e:
                 print(f"Error on VM {self.vm_id}: {e}")
-
     
     def send_message(self, target_port):
         """
@@ -78,11 +78,11 @@ class VirtualMachine:
         """
         if not self.message_queue.empty():
             received_time = self.message_queue.get()
-            self.logical_clock = max(self.logical_clock, received_time) + 1 # Update logical clock
+            self.logical_clock = max(self.logical_clock, received_time) + 1
             log_entry = f"Received message: Logical Clock = {self.logical_clock}, System Time = {datetime.now()}, Queue Length = {self.message_queue.qsize()}\n"
         else:
             action = random.randint(1, 10)
-            self.logical_clock += 1 # Update logical clock
+            self.logical_clock += 1
             if action == 1:
                 target = self.peers[0]
                 self.send_message(target)
@@ -103,7 +103,7 @@ class VirtualMachine:
     def run(self):
         """
         Main execution loop:
-        - Starts the listening thread.
+        - Starts a thread for listening.
         - Runs for a fixed duration (60 seconds), processing cycles at the machine's clock speed.
         """
         threading.Thread(target=self.listen, daemon=True).start()
@@ -121,18 +121,27 @@ class VirtualMachine:
         self.log_file.close()
 
 
+def vm_process(vm_id, peers, port):
+    """
+    Function to run the VirtualMachine in a separate process.
+    """
+    vm = VirtualMachine(vm_id, peers, port)
+    vm.run()
+
+
 if __name__ == "__main__":
     vm_ports = [6000, 6001, 6002]
-    vms = []
+    processes = []
     
+    # Start a separate process for each virtual machine
     for i, port in enumerate(vm_ports):
         peers = [p for p in vm_ports if p != port]
-        vm = VirtualMachine(i, peers, port)
-        vms.append(vm)
-        threading.Thread(target=vm.run, daemon=True).start()
+        p = multiprocessing.Process(target=vm_process, args=(i, peers, port))
+        processes.append(p)
+        p.start() 
 
     time.sleep(60) 
 
-    for vm in vms:
-        vm.stop()
-
+    for p in processes:
+        p.terminate()
+        p.join()

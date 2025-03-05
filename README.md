@@ -1,6 +1,6 @@
 # Scale Models and Logical Clocks
 
-This project simulates an asynchronous distributed system using 3 virtual machines (VMs) that communicate via sockets using Python. Each VM maintains a logical clock and can send and receive messages with peers. The system logs all activities accordingly.
+This project simulates an asynchronous distributed system using 3 virtual machines (VMs) each running in a separate process and communicating via sockets using Python. Each VM maintains a logical clock and can send and receive messages with peers. The system logs all activities accordingly.
 
 
 ## Running the Project
@@ -10,7 +10,7 @@ Execute the following command to start the system:
 python virtualmachine.py
 ```
 
-- This will start three virtual machines, each running in a separate thread.
+- This will start three virtual machines, each running in a separate process.
 - The simulation runs for 60 seconds, during which the VMs send messages, process internal events, and update their logical clocks.
 
 ## File Structure
